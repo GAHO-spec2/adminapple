@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Monitoreo | Applebee’s Lealtad</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="manzanas.png" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+
+<body>
+  <main class="admin-page">
+
+    <header class="admin-header">
+      <div>
+        <h1>Monitoreo en tiempo real</h1>
+        <p>Control de clientes, tickets, monedero, canjes y alertas.</p>
+      </div>
+
+      <button class="btn-logout" onclick="cerrarSesionAdmin()">
+        Salir
+      </button>
+    </header>
+
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <p>Clientes registrados</p>
+        <h2 id="kpiClientes">0</h2>
+      </div>
+
+      <div class="kpi-card">
+        <p>Tickets registrados</p>
+        <h2 id="kpiTickets">0</h2>
+      </div>
+
+      <div class="kpi-card">
+        <p>Canjes pendientes</p>
+        <h2 id="kpiCanjesPendientes">0</h2>
+      </div>
+
+      <div class="kpi-card alert">
+        <p>Alertas pendientes</p>
+        <h2 id="kpiAlertas">0</h2>
+      </div>
+    </section>
+
+    <section class="admin-grid">
+      <article class="admin-card">
+        <div class="section-head">
+          <div>
+            <h2>Alertas inteligentes</h2>
+            <p>Clientes inactivos, bonos sugeridos y acciones pendientes.</p>
+          </div>
+          <button class="btn-secondary" onclick="generarAlertasInactividad()">
+            Revisar inactividad
+          </button>
+        </div>
+
+        <div id="listaAlertas" class="admin-list">
+          Cargando alertas...
+        </div>
+      </article>
+
+      <article class="admin-card">
+        <div class="section-head">
+          <div>
+            <h2>Clientes</h2>
+            <p>Consulta perfil, saldo y actividad.</p>
+          </div>
+          <input
+            type="text"
+            id="buscarCliente"
+            class="search-input"
+            placeholder="Buscar cliente..."
+            oninput="filtrarClientesAdmin()"
+          />
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Email</th>
+                <th>Saldo</th>
+                <th>Tickets</th>
+                <th>Canjes</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tablaClientes">
+              <tr>
+                <td colspan="6">Cargando clientes...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="admin-grid">
+      <article class="admin-card">
+        <div class="section-head">
+          <div>
+            <h2>Tickets recientes</h2>
+            <p>Últimos escaneos registrados por clientes.</p>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Sucursal</th>
+                <th>Folio</th>
+                <th>Total</th>
+                <th>Monedero</th>
+              </tr>
+            </thead>
+            <tbody id="tablaTickets">
+              <tr>
+                <td colspan="6">Cargando tickets...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="admin-card">
+        <div class="section-head">
+          <div>
+            <h2>Canjes recientes</h2>
+            <p>Canjes generados y validados.</p>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Beneficio</th>
+                <th>Monto</th>
+                <th>Estado</th>
+                <th>Sucursal</th>
+              </tr>
+            </thead>
+            <tbody id="tablaCanjesAdmin">
+              <tr>
+                <td colspan="6">Cargando canjes...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="admin-card">
+      <div class="section-head">
+        <div>
+          <h2>Perfil del cliente</h2>
+          <p>Selecciona un cliente para ver su información completa.</p>
+        </div>
+      </div>
+
+      <div id="perfilClienteAdmin" class="profile-empty">
+        No hay cliente seleccionado.
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+
+  <script src="firebase.js?v=admin_1"></script>
+  <script src="admin.js?v=admin_1"></script>
+</body>
+</html>

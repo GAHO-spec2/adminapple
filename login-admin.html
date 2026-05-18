@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Admin | Applebee’s Lealtad</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="manzanas.png" />
+  <link rel="stylesheet" href="admin.css?v=admin_2" />
+</head>
+
+<body>
+  <main class="admin-auth-page">
+    <section class="admin-auth-card">
+      <div class="admin-brand">
+        <div class="admin-logo">
+          <img src="manzanas.png" alt="Applebee's" />
+        </div>
+
+        <h1>Applebee’s</h1>
+        <p>Monitoreo de Lealtad</p>
+      </div>
+
+      <h2>Acceso administrativo</h2>
+
+      <div class="form-group">
+        <label>Correo</label>
+        <input
+          type="email"
+          id="emailAdmin"
+          placeholder="admin@empresa.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Contraseña</label>
+
+        <div class="password-box">
+          <input
+            type="password"
+            id="passwordAdmin"
+            placeholder="Tu contraseña"
+            autocomplete="current-password"
+          />
+          <span class="toggle-pass" onclick="togglePasswordAdmin()">👁️</span>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="loginAdmin()">
+        Entrar al monitoreo
+      </button>
+
+      <p class="auth-note">
+        Acceso exclusivo para administradores, gerentes y usuarios autorizados.
+      </p>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+
+<script src="firebase.js?v=admin_fix_1"></script>
+<script src="admin.js?v=admin_fix_1"></script>
+</body>
+</html>
