@@ -69,13 +69,23 @@
             <h2>Clientes</h2>
             <p>Consulta perfil, saldo y actividad.</p>
           </div>
+          <div class="search-box">
           <input
             type="text"
             id="buscarCliente"
             class="search-input"
-            placeholder="Buscar cliente..."
+            placeholder="Buscar por nombre, correo o teléfono..."
             oninput="filtrarClientesAdmin()"
+            onkeydown="if(event.key === 'Enter') filtrarClientesAdmin()"
           />
+
+          <button class="search-btn" onclick="filtrarClientesAdmin()" title="Buscar">
+            🔍
+          </button>
+
+          <button class="clear-btn" onclick="limpiarBusquedaClientes()" title="Limpiar">
+            ✕
+          </button>
         </div>
 
         <div class="table-wrapper">
@@ -209,7 +219,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
 
-  <script src="firebase.js?v=admin_1"></script>
-  <script src="admin.js?v=admin_1"></script>
+ <link rel="stylesheet" href="admin.css?v=admin_search_1" />
+<script src="admin.js?v=admin_search_1"></script>
 </body>
 </html>
