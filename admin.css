@@ -750,3 +750,36 @@ tbody tr:hover {
 .admin-card.clientes-card td {
   white-space: nowrap;
 }
+/* CLIENTES FULL WIDTH */
+.clientes-card {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.clientes-card .section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.clientes-card .section-head > div:first-child {
+  min-width: 260px;
+}
+
+.clientes-card .table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 18px;
+}
+
+.clientes-card table {
+  width: 100%;
+  min-width: 1200px;
+}
+
+.clientes-card th,
+.clientes-card td {
+  white-space: nowrap;
+}
