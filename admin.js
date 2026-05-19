@@ -218,19 +218,37 @@ function renderClientes() {
 }
 
 function filtrarClientesAdmin() {
-  const q = document.getElementById("buscarCliente").value.toLowerCase();
+  const input = document.getElementById("buscarCliente");
   const tbody = document.getElementById("tablaClientes");
-  if (!tbody) return;
+
+  if (!input || !tbody) return;
+
+  const q = input.value.trim().toLowerCase();
 
   const clientes = Object.entries(adminUsers)
-    .filter(([uid, u]) => u.role === "cliente")
+    .filter(([uid, u]) => String(u.role || "").toLowerCase() === "cliente")
     .filter(([uid, u]) => {
-      const texto = `${u.nombre || ""} ${u.email || ""} ${u.telefono || ""}`.toLowerCase();
+      if (!q) return true;
+
+      const texto = `
+        ${uid || ""}
+        ${u.nombre || ""}
+        ${u.email || ""}
+        ${u.telefono || ""}
+      `.toLowerCase();
+
       return texto.includes(q);
-    });
+    })
+    .sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0));
 
   if (!clientes.length) {
-    tbody.innerHTML = `<tr><td colspan="6">Sin resultados.</td></tr>`;
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          No se encontró ningún cliente con: <strong>${q}</strong>
+        </td>
+      </tr>
+    `;
     return;
   }
 
@@ -248,6 +266,13 @@ function filtrarClientesAdmin() {
       </td>
     </tr>
   `).join("");
+}
+
+function limpiarBusquedaClientes() {
+  const input = document.getElementById("buscarCliente");
+  if (input) input.value = "";
+
+  renderClientes();
 }
 
 // ================= TICKETS =================
