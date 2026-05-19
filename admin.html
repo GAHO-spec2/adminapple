@@ -160,19 +160,47 @@
       </article>
     </section>
 
-    <section class="admin-card">
-      <div class="section-head">
-        <div>
-          <h2>Perfil del cliente</h2>
-          <p>Selecciona un cliente para ver su información completa.</p>
-        </div>
-      </div>
+   <section class="admin-card">
+  <div class="section-head">
+    <div>
+      <h2>Perfil del cliente</h2>
+      <p>Consulta tickets, canjes, movimientos y ajusta monedero.</p>
+    </div>
+  </div>
 
-      <div id="perfilClienteAdmin" class="profile-empty">
-        No hay cliente seleccionado.
-      </div>
+  <div id="perfilClienteAdmin" class="profile-empty">
+    No hay cliente seleccionado.
+  </div>
+
+  <div id="detalleClienteAdmin" class="client-detail-grid" style="display:none;">
+    <section class="detail-box">
+      <h3>Tickets registrados</h3>
+      <div id="detalleTicketsCliente">Sin tickets.</div>
     </section>
 
+    <section class="detail-box">
+      <h3>Canjes</h3>
+      <div id="detalleCanjesCliente">Sin canjes.</div>
+    </section>
+
+    <section class="detail-box">
+      <h3>Movimientos de monedero</h3>
+      <div id="detalleMovimientosCliente">Sin movimientos.</div>
+    </section>
+
+    <section class="detail-box">
+      <h3>Ajustar monedero</h3>
+
+      <div class="adjust-form">
+        <input type="number" id="ajusteMonto" placeholder="Ej. 5 o -5" step="0.01">
+        <input type="text" id="ajusteMotivo" placeholder="Motivo del ajuste">
+        <button onclick="aplicarAjusteMonederoAdmin()">Aplicar ajuste</button>
+      </div>
+
+      <small>Usa monto positivo para agregar y negativo para descontar.</small>
+    </section>
+  </div>
+</section>
   </main>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
