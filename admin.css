@@ -678,3 +678,50 @@ tbody tr:hover {
     grid-template-columns: 1fr;
   }
 }
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-box .search-input {
+  width: 320px;
+}
+
+.search-btn,
+.clear-btn {
+  border: none;
+  cursor: pointer;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 14px;
+  color: white;
+  font-weight: 900;
+  transition: var(--transition);
+}
+
+.search-btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  box-shadow: 0 12px 28px rgba(227,24,55,0.22);
+}
+
+.clear-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
+}
+
+.search-btn:hover,
+.clear-btn:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 760px) {
+  .search-box {
+    width: 100%;
+  }
+
+  .search-box .search-input {
+    width: 100%;
+  }
+}
