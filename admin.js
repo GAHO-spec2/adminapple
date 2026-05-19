@@ -4,7 +4,7 @@ let adminUsers = {};
 let adminTickets = {};
 let adminCanjes = {};
 let adminAlertas = {};
-
+let clienteSeleccionadoAdmin = null;
 const ROLES_ADMIN = ["admin", "gerente", "manager"];
 
 function money(n) {
@@ -311,20 +311,36 @@ function renderCanjes() {
 // ================= PERFIL CLIENTE =================
 
 async function verPerfilClienteAdmin(uid) {
+  clienteSeleccionadoAdmin = uid;
+
   const cont = document.getElementById("perfilClienteAdmin");
+  const detailGrid = document.getElementById("detalleClienteAdmin");
+
   if (!cont) return;
 
   const user = adminUsers[uid];
 
   if (!user) {
     cont.innerHTML = "Cliente no encontrado.";
+    if (detailGrid) detailGrid.style.display = "none";
     return;
   }
 
-  const tickets = Object.values(adminTickets).filter(t => t.userId === uid);
-  const canjes = Object.values(adminCanjes).filter(c => c.userId === uid);
+  const tickets = Object.values(adminTickets)
+    .filter(t => t.userId === uid)
+    .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
-  const ultimoTicket = tickets.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))[0];
+  const canjes = Object.values(adminCanjes)
+    .filter(c => c.userId === uid)
+    .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  const movementsSnap = await rtdb.ref(`walletMovements/${uid}`).once("value");
+  const movementsData = movementsSnap.val() || {};
+
+  const movimientos = Object.values(movementsData)
+    .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  const ultimoTicket = tickets[0];
 
   cont.innerHTML = `
     <div class="client-profile">
@@ -336,6 +352,7 @@ async function verPerfilClienteAdmin(uid) {
         <h2>${user.nombre || "Cliente"}</h2>
         <p><strong>Email:</strong> ${user.email || "---"}</p>
         <p><strong>Teléfono:</strong> ${user.telefono || "---"}</p>
+        <p><strong>UID:</strong> ${uid}</p>
         <p><strong>Última actividad:</strong> ${ultimoTicket ? formatDate(ultimoTicket.createdAt) : "Sin tickets"}</p>
 
         <div class="client-stats">
@@ -372,8 +389,13 @@ async function verPerfilClienteAdmin(uid) {
       </div>
     </div>
   `;
-}
 
+  if (detailGrid) detailGrid.style.display = "grid";
+
+  renderDetalleTicketsCliente(tickets);
+  renderDetalleCanjesCliente(canjes);
+  renderDetalleMovimientosCliente(movimientos);
+}
 // ================= ALERTAS =================
 
 function renderAlertas() {
@@ -553,4 +575,136 @@ async function rechazarAlerta(alertId) {
   });
 
   alert("Alerta rechazada.");
+}
+
+function renderDetalleTicketsCliente(tickets) {
+  const cont = document.getElementById("detalleTicketsCliente");
+  if (!cont) return;
+
+  if (!tickets.length) {
+    cont.innerHTML = "Sin tickets registrados.";
+    return;
+  }
+
+  cont.innerHTML = tickets.slice(0, 20).map(t => `
+    <div class="detail-item">
+      <strong>Ticket ${t.folio || "---"}</strong>
+      <p><b>Fecha consumo:</b> ${t.fechaTicket || "---"}</p>
+      <p><b>Sucursal:</b> ${t.sucursal || "---"}</p>
+      <p><b>Total:</b> ${money(t.total || 0)}</p>
+      <p><b>Monedero generado:</b> ${money(t.monederoGenerado || 0)}</p>
+      <p><b>Status:</b> ${t.status || "---"}</p>
+      <p><b>Registrado:</b> ${formatDate(t.createdAt)}</p>
+    </div>
+  `).join("");
+}
+
+function renderDetalleCanjesCliente(canjes) {
+  const cont = document.getElementById("detalleCanjesCliente");
+  if (!cont) return;
+
+  if (!canjes.length) {
+    cont.innerHTML = "Sin canjes registrados.";
+    return;
+  }
+
+  cont.innerHTML = canjes.slice(0, 20).map(c => `
+    <div class="detail-item">
+      <strong>${c.beneficio || "Canje"}</strong>
+      <p><b>Monto:</b> ${money(c.monto || 0)}</p>
+      <p><b>Status:</b> ${c.status || "---"}</p>
+      <p><b>Creado:</b> ${formatDate(c.createdAt)}</p>
+      <p><b>Canjeado:</b> ${formatDate(c.redeemedAt)}</p>
+      <p><b>Gerente:</b> ${c.gerenteEmail || "---"}</p>
+      <p><b>Sucursal:</b> ${c.sucursalCanjeNombre || c.sucursalCanje || "---"}</p>
+    </div>
+  `).join("");
+}
+
+function renderDetalleMovimientosCliente(movimientos) {
+  const cont = document.getElementById("detalleMovimientosCliente");
+  if (!cont) return;
+
+  if (!movimientos.length) {
+    cont.innerHTML = "Sin movimientos.";
+    return;
+  }
+
+  cont.innerHTML = movimientos.slice(0, 25).map(m => `
+    <div class="detail-item">
+      <strong>${m.concepto || m.tipo || "Movimiento"}</strong>
+      <p><b>Monto:</b> ${money(m.monto || 0)}</p>
+      <p><b>Tipo:</b> ${m.tipo || "---"}</p>
+      <p><b>Fecha:</b> ${formatDate(m.createdAt)}</p>
+      <p><b>Aprobado por:</b> ${m.approvedBy || "---"}</p>
+    </div>
+  `).join("");
+}
+async function aplicarAjusteMonederoAdmin() {
+  const admin = auth.currentUser;
+
+  if (!admin) {
+    alert("Sesión no válida.");
+    return;
+  }
+
+  if (!clienteSeleccionadoAdmin) {
+    alert("Selecciona primero un cliente.");
+    return;
+  }
+
+  const monto = Number(document.getElementById("ajusteMonto").value);
+  const motivo = document.getElementById("ajusteMotivo").value.trim();
+
+  if (!monto || !motivo) {
+    alert("Ingresa monto y motivo.");
+    return;
+  }
+
+  const confirmar = confirm(
+    `¿Confirmas aplicar ajuste de ${money(monto)}?\n\nMotivo: ${motivo}`
+  );
+
+  if (!confirmar) return;
+
+  const userRef = rtdb.ref(`users/${clienteSeleccionadoAdmin}`);
+  const movementRef = rtdb.ref(`walletMovements/${clienteSeleccionadoAdmin}`).push();
+
+  try {
+    await userRef.transaction(data => {
+      data = data || {};
+      data.saldoDisponible = Number(data.saldoDisponible || 0) + monto;
+      data.updatedAt = Date.now();
+      return data;
+    });
+
+    await movementRef.set({
+      userId: clienteSeleccionadoAdmin,
+      tipo: monto > 0 ? "ajuste_admin_abono" : "ajuste_admin_cargo",
+      concepto: motivo,
+      monto,
+      createdAt: Date.now(),
+      approvedBy: admin.email
+    });
+
+    await rtdb.ref("auditLogs").push().set({
+      type: "AJUSTE_MONEDERO_ADMIN",
+      userId: clienteSeleccionadoAdmin,
+      monto,
+      motivo,
+      adminEmail: admin.email,
+      createdAt: Date.now()
+    });
+
+    document.getElementById("ajusteMonto").value = "";
+    document.getElementById("ajusteMotivo").value = "";
+
+    alert("Ajuste aplicado correctamente.");
+
+    verPerfilClienteAdmin(clienteSeleccionadoAdmin);
+
+  } catch (error) {
+    console.error("Error aplicando ajuste:", error);
+    alert("No se pudo aplicar el ajuste.");
+  }
 }
