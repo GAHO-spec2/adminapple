@@ -725,3 +725,28 @@ tbody tr:hover {
     width: 100%;
   }
 }
+
+/* FIX CLIENTES CARD */
+.admin-card.clientes-card {
+  grid-column: 1 / -1;
+}
+
+.admin-card.clientes-card .section-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.admin-card.clientes-card .table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.admin-card.clientes-card table {
+  min-width: 850px;
+}
+
+.admin-card.clientes-card th,
+.admin-card.clientes-card td {
+  white-space: nowrap;
+}
