@@ -7,7 +7,7 @@
   <title>Monitoreo | Applebee’s Lealtad</title>
 
   <link rel="icon" type="image/png" sizes="32x32" href="manzanas.png" />
-  <link rel="stylesheet" href="admin.css?v=clientes_full_3" />
+  <link rel="stylesheet" href="admin.css?v=modal_cliente_1" />
 </head>
 
 <body>
@@ -171,47 +171,45 @@
       </article>
     </section>
 
-    <section class="admin-card">
-      <div class="section-head">
-        <div>
-          <h2>Perfil del cliente</h2>
-          <p>Consulta tickets, canjes, movimientos y ajusta monedero.</p>
+    <!-- MODAL PERFIL CLIENTE -->
+    <div id="modalClienteAdmin" class="modal-admin">
+      <div class="modal-admin-card">
+        <button class="modal-close" onclick="cerrarModalClienteAdmin()">×</button>
+
+        <div id="perfilClienteAdmin" class="profile-empty">
+          Cargando perfil...
+        </div>
+
+        <div id="detalleClienteAdmin" class="client-detail-grid">
+          <section class="detail-box">
+            <h3>Tickets registrados</h3>
+            <div id="detalleTicketsCliente">Sin tickets.</div>
+          </section>
+
+          <section class="detail-box">
+            <h3>Canjes</h3>
+            <div id="detalleCanjesCliente">Sin canjes.</div>
+          </section>
+
+          <section class="detail-box">
+            <h3>Movimientos de monedero</h3>
+            <div id="detalleMovimientosCliente">Sin movimientos.</div>
+          </section>
+
+          <section class="detail-box">
+            <h3>Ajustar monedero</h3>
+
+            <div class="adjust-form">
+              <input type="number" id="ajusteMonto" placeholder="Ej. 5 o -5" step="0.01">
+              <input type="text" id="ajusteMotivo" placeholder="Motivo del ajuste">
+              <button onclick="aplicarAjusteMonederoAdmin()">Aplicar ajuste</button>
+            </div>
+
+            <small>Usa monto positivo para agregar y negativo para descontar.</small>
+          </section>
         </div>
       </div>
-
-      <div id="perfilClienteAdmin" class="profile-empty">
-        No hay cliente seleccionado.
-      </div>
-
-      <div id="detalleClienteAdmin" class="client-detail-grid" style="display:none;">
-        <section class="detail-box">
-          <h3>Tickets registrados</h3>
-          <div id="detalleTicketsCliente">Sin tickets.</div>
-        </section>
-
-        <section class="detail-box">
-          <h3>Canjes</h3>
-          <div id="detalleCanjesCliente">Sin canjes.</div>
-        </section>
-
-        <section class="detail-box">
-          <h3>Movimientos de monedero</h3>
-          <div id="detalleMovimientosCliente">Sin movimientos.</div>
-        </section>
-
-        <section class="detail-box">
-          <h3>Ajustar monedero</h3>
-
-          <div class="adjust-form">
-            <input type="number" id="ajusteMonto" placeholder="Ej. 5 o -5" step="0.01">
-            <input type="text" id="ajusteMotivo" placeholder="Motivo del ajuste">
-            <button onclick="aplicarAjusteMonederoAdmin()">Aplicar ajuste</button>
-          </div>
-
-          <small>Usa monto positivo para agregar y negativo para descontar.</small>
-        </section>
-      </div>
-    </section>
+    </div>
 
   </main>
 
@@ -221,7 +219,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
 
-  <script src="firebase.js?v=admin_fix_auth_2"></script>
-  <script src="admin.js?v=admin_fix_auth_2"></script>
+  <script src="firebase.js?v=modal_cliente_1"></script>
+  <script src="admin.js?v=modal_cliente_1"></script>
 </body>
 </html>
