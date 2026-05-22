@@ -338,6 +338,12 @@ function renderCanjes() {
 async function verPerfilClienteAdmin(uid) {
   clienteSeleccionadoAdmin = uid;
 
+  const modal = document.getElementById("modalClienteAdmin");
+if (modal) {
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
   const cont = document.getElementById("perfilClienteAdmin");
   const detailGrid = document.getElementById("detalleClienteAdmin");
 
@@ -732,4 +738,9 @@ async function aplicarAjusteMonederoAdmin() {
     console.error("Error aplicando ajuste:", error);
     alert("No se pudo aplicar el ajuste.");
   }
+}
+function cerrarModalClienteAdmin() {
+  const modal = document.getElementById("modalClienteAdmin");
+  if (modal) modal.classList.remove("active");
+  document.body.style.overflow = "";
 }
