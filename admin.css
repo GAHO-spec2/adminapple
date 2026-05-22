@@ -783,3 +783,113 @@ tbody tr:hover {
 .clientes-card td {
   white-space: nowrap;
 }
+/* ================= FIX LAYOUT GENERAL ================= */
+
+.admin-card {
+  margin-bottom: 24px;
+}
+
+.kpi-grid {
+  align-items: stretch;
+}
+
+.kpi-card {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.section-head {
+  align-items: center;
+}
+
+/* ================= MODAL CLIENTE ADMIN ================= */
+
+.modal-admin {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  z-index: 9999;
+}
+
+.modal-admin.active {
+  display: flex;
+}
+
+.modal-admin-card {
+  width: 100%;
+  max-width: 1250px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #07111d;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+  position: relative;
+}
+
+.modal-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.client-profile {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+.client-avatar img {
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.client-info h2 {
+  color: white;
+}
+
+.client-stats {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.client-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .modal-admin-card {
+    padding: 20px;
+  }
+
+  .client-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .client-stats,
+  .client-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
