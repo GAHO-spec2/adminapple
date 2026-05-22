@@ -14,7 +14,6 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-// 🔥 Variables globales para todos los archivos
 window.auth = firebase.auth();
 window.db = firebase.firestore();
 window.rtdb = firebase.database();
@@ -33,7 +32,7 @@ if (firebase.storage) {
   window.storage = firebase.storage();
 }
 
-console.log("Firebase conectado correctamente:", {
+console.log("Firebase conectado:", {
   auth: !!window.auth,
   db: !!window.db,
   rtdb: !!window.rtdb,
